@@ -33,144 +33,120 @@
 // namespace:
 this.createjs = this.createjs||{};
 
+
 (function() {
 	"use strict";
-
-/**
- * The Timeline class synchronizes multiple tweens and allows them to be controlled as a group. Please note that if a
- * timeline is looping, the tweens on it may appear to loop even if the "loop" property of the tween is false.
- * @class Timeline
- * @param {Array} tweens An array of Tweens to add to this timeline. See addTween for more info.
- * @param {Object} labels An object defining labels for using {{#crossLink "Timeline/gotoAndPlay"}}{{/crossLink}}/{{#crossLink "Timeline/gotoAndStop"}}{{/crossLink}}.
- * See {{#crossLink "Timeline/setLabels"}}{{/crossLink}}
- * for details.
- * @param {Object} props The configuration properties to apply to this tween instance (ex. `{loop:true}`). All properties
- * default to false. Supported props are:<UL>
- *    <LI> loop: sets the loop property on this tween.</LI>
- *    <LI> useTicks: uses ticks for all durations instead of milliseconds.</LI>
- *    <LI> ignoreGlobalPause: sets the ignoreGlobalPause property on this tween.</LI>
- *    <LI> paused: indicates whether to start the tween paused.</LI>
- *    <LI> position: indicates the initial position for this timeline.</LI>
- *    <LI> onChange: specifies a listener to add for the {{#crossLink "Timeline/change:event"}}{{/crossLink}} event.</LI>
- * </UL>
- * @extends EventDispatcher
- * @constructor
- **/
-var Timeline = function(tweens, labels, props) {
-  this.initialize(tweens, labels, props);
-};
-var p = Timeline.prototype = new createjs.EventDispatcher();
-
-// public properties:
-
-	/**
-	 * Causes this timeline to continue playing when a global pause is active.
-	 * @property ignoreGlobalPause
-	 * @type Boolean
-	 **/
-	p.ignoreGlobalPause = false;
-
-	/**
-	 * Read-only property specifying the total duration of this timeline in milliseconds (or ticks if useTicks is true).
-	 * This value is usually automatically updated as you modify the timeline. See updateDuration for more information.
-	 * @property duration
-	 * @type Number
-	 **/
-	p.duration = 0;
-
-	/**
-	 * If true, the timeline will loop when it reaches the end. Can be set via the props param.
-	 * @property loop
-	 * @type Boolean
-	 **/
-	p.loop = false;
-
-	// TODO: deprecated.
-	/**
-	 * REMOVED. Use {{#crossLink "EventDispatcher/addEventListener"}}{{/crossLink}} and the {{#crossLink "Timeline/change:event"}}{{/crossLink}}
-	 * event.
-	 * @property onChange
-	 * @type Function
-	 * @deprecated Use addEventListener and the "change" event.
-	 **/
-
-	/**
-	 * Read-only. The current normalized position of the timeline. This will always be a value between 0 and duration.
-	 * Changing this property directly will have no effect.
-	 * @property position
-	 * @type Object
-	 **/
-	p.position = null;
-
-// events:
-	/**
-	 * Called whenever the timeline's position changes.
-	 * @event change
-	 * @since 0.5.0
-	 **/
-
-// private properties:
-
-	/**
-	 * @property _paused
-	 * @type Boolean
-	 * @protected
-	 **/
-	p._paused = false;
-
-	/**
-	 * @property _tweens
-	 * @type Array[Tween]
-	 * @protected
-	 **/
-	p._tweens = null;
-
-	/**
-	 * @property _labels
-	 * @type Object
-	 * @protected
-	 **/
-	p._labels = null;
 	
-	/**
-	 * @property _labelList
-	 * @type Array[Object]
-	 * @protected
-	 **/
-	p._labelList = null;
 
+// constructor	
 	/**
-	 * @property _prevPosition
-	 * @type Number
-	 * @default 0
-	 * @protected
+	 * The Timeline class synchronizes multiple tweens and allows them to be controlled as a group. Please note that if a
+	 * timeline is looping, the tweens on it may appear to loop even if the "loop" property of the tween is false.
+	 * @class Timeline
+	 * @param {Array} tweens An array of Tweens to add to this timeline. See addTween for more info.
+	 * @param {Object} labels An object defining labels for using {{#crossLink "Timeline/gotoAndPlay"}}{{/crossLink}}/{{#crossLink "Timeline/gotoAndStop"}}{{/crossLink}}.
+	 * See {{#crossLink "Timeline/setLabels"}}{{/crossLink}}
+	 * for details.
+	 * @param {Object} props The configuration properties to apply to this tween instance (ex. `{loop:true}`). All properties
+	 * default to false. Supported props are:<UL>
+	 *    <LI> loop: sets the loop property on this tween.</LI>
+	 *    <LI> useTicks: uses ticks for all durations instead of milliseconds.</LI>
+	 *    <LI> ignoreGlobalPause: sets the ignoreGlobalPause property on this tween.</LI>
+	 *    <LI> paused: indicates whether to start the tween paused.</LI>
+	 *    <LI> position: indicates the initial position for this timeline.</LI>
+	 *    <LI> onChange: specifies a listener to add for the {{#crossLink "Timeline/change:event"}}{{/crossLink}} event.</LI>
+	 * </UL>
+	 * @extends EventDispatcher
+	 * @constructor
 	 **/
-	p._prevPosition = 0;
+	function Timeline(tweens, labels, props) {
+		this.EventDispatcher_constructor();
 
-	/**
-	 * @property _prevPos
-	 * @type Number
-	 * @default -1
-	 * @protected
-	 **/
-	p._prevPos = -1;
+	// public properties:
+		/**
+		 * Causes this timeline to continue playing when a global pause is active.
+		 * @property ignoreGlobalPause
+		 * @type Boolean
+		 **/
+		this.ignoreGlobalPause = false;
 
-	/**
-	 * @property _useTicks
-	 * @type Boolean
-	 * @default false
-	 * @protected
-	 **/
-	p._useTicks = false;
+		/**
+		 * Read-only property specifying the total duration of this timeline in milliseconds (or ticks if useTicks is true).
+		 * This value is usually automatically updated as you modify the timeline. See updateDuration for more information.
+		 * @property duration
+		 * @type Number
+		 **/
+		this.duration = 0;
 
-// constructor:
-	/**
-	* Initialization method.
-	* @method initialize
-	* @protected
-	**/
-	p.initialize = function(tweens, labels, props) {
+		/**
+		 * If true, the timeline will loop when it reaches the end. Can be set via the props param.
+		 * @property loop
+		 * @type Boolean
+		 **/
+		this.loop = false;
+
+		/**
+		 * Read-only. The current normalized position of the timeline. This will always be a value between 0 and duration.
+		 * Changing this property directly will have no effect.
+		 * @property position
+		 * @type Object
+		 **/
+		this.position = null;
+
+		// private properties:
+		/**
+		 * @property _paused
+		 * @type Boolean
+		 * @protected
+		 **/
+		this._paused = false;
+
+		/**
+		 * @property _tweens
+		 * @type Array[Tween]
+		 * @protected
+		 **/
 		this._tweens = [];
+
+		/**
+		 * @property _labels
+		 * @type Object
+		 * @protected
+		 **/
+		this._labels = null;
+
+		/**
+		 * @property _labelList
+		 * @type Array[Object]
+		 * @protected
+		 **/
+		this._labelList = null;
+
+		/**
+		 * @property _prevPosition
+		 * @type Number
+		 * @default 0
+		 * @protected
+		 **/
+		this._prevPosition = 0;
+
+		/**
+		 * @property _prevPos
+		 * @type Number
+		 * @default -1
+		 * @protected
+		 **/
+		this._prevPos = -1;
+
+		/**
+		 * @property _useTicks
+		 * @type Boolean
+		 * @default false
+		 * @protected
+		 **/
+		this._useTicks = false;
+
+
 		if (props) {
 			this._useTicks = props.useTicks;
 			this.loop = props.loop;
@@ -182,7 +158,22 @@ var p = Timeline.prototype = new createjs.EventDispatcher();
 		if (props&&props.paused) { this._paused=true; }
 		else { createjs.Tween._register(this,true); }
 		if (props&&props.position!=null) { this.setPosition(props.position, createjs.Tween.NONE); }
+		
 	};
+	
+	var p = createjs.extend(Timeline, createjs.EventDispatcher);
+
+	// TODO: deprecated
+	// p.initialize = function() {}; // searchable for devs wondering where it is. REMOVED. See docs for details.
+
+	
+// events:
+	/**
+	 * Called whenever the timeline's position changes.
+	 * @event change
+	 * @since 0.5.0
+	 **/
+
 
 // public methods:
 	/**
@@ -258,7 +249,7 @@ var p = Timeline.prototype = new createjs.EventDispatcher();
 	p.setLabels = function(o) {
 		this._labels = o ?  o : {};
 	};
-	
+
 	/**
 	 * Returns a sorted list of the labels defined on this timeline.
 	 * @method getLabels
@@ -276,7 +267,7 @@ var p = Timeline.prototype = new createjs.EventDispatcher();
 		}
 		return list;
 	};
-	
+
 	/**
 	 * Returns the name of the label on or immediately before the current position. For example, given a timeline with
 	 * two labels, "first" on frame index 4, and "second" on frame 8, getCurrentLabel would return:<UL>
@@ -297,7 +288,7 @@ var p = Timeline.prototype = new createjs.EventDispatcher();
 		}
 		return null;
 	};
-	
+
 	/**
 	 * Unpauses this timeline and jumps to the specified position or label.
 	 * @method gotoAndPlay
@@ -383,7 +374,7 @@ var p = Timeline.prototype = new createjs.EventDispatcher();
 	 * @param {String|Number} positionOrLabel A numeric position value or label string.
 	 **/
 	p.resolve = function(positionOrLabel) {
-		var pos = parseFloat(positionOrLabel);
+		var pos = Number(positionOrLabel);
 		if (isNaN(pos)) { pos = this._labels[positionOrLabel]; }
 		return pos;
 	};
@@ -415,5 +406,7 @@ var p = Timeline.prototype = new createjs.EventDispatcher();
 		if (pos != null) { this.setPosition(pos); }
 	};
 
-createjs.Timeline = Timeline;
+
+	createjs.Timeline = createjs.promote(Timeline, "EventDispatcher");
+
 }());

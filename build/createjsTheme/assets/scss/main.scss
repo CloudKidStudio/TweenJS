@@ -1,43 +1,82 @@
-/*
-Font sizes for all selectors other than the body are given in percentages,
-with 100% equal to 13px. To calculate a font size percentage, multiply the
-desired size in pixels by 7.6923076923.
+//*******************************************
+//
+//  EASELJS DOCS
+//  - 2.0 skin
+//
+//  1) IMPORTS
+//  2) LIBRARY SPECIFIC COLORS
+//  3) RULES
+//
+//*******************************************
 
-Here's a quick lookup table:
 
-10px - 76.923%
-11px - 84.615%
-12px - 92.308%
-13px - 100%
-14px - 107.692%
-15px - 115.385%
-16px - 123.077%
-17px - 130.769%
-18px - 138.462%
-19px - 146.154%
-20px - 153.846%
-*/
+
+//*******************************************
+//
+//  IMPORTS
+//
+//*******************************************
+// UTILITIES
+@import "utilities/breakpoint.scss";
+@import "utilities/clearfix.scss";
+
+// SETTINGS
+@import "settings/breakpoint.scss";
+@import "settings/color.scss";
+@import "settings/fonts.scss";
+@import "settings/layout.scss";
+@import "settings/path.scss";
+
+// ELEMENTS
+@import "elements/tags.scss";
+
+
+//*******************************************
+//
+//  LIBRARY SPECIFIC COLORS
+//
+//*******************************************
+@import "library-specific.scss";
+
+.yui3-skin-sam .yui3-tab-selected .yui3-tab-label,
+.yui3-skin-sam .yui3-tab-selected .yui3-tab-label:focus,
+.yui3-skin-sam .yui3-tab-selected .yui3-tab-label:hover {
+  background: none !important;
+  border: none !important;
+  background-color: $library-color !important;
+}
+.yui3-skin-sam .yui3-tabview-list {
+  border-bottom: 5px solid $library-color !important;
+}
+
+
+//*******************************************
+//
+//  RULES
+//
+//*******************************************
 html {
-  background: #e6e6e6;
-  color: #111111;
+  background: $color_gray-lightest;
+  color: $color_gray-default;
   overflow-y: scroll;
 }
 body {
-  font: 13px/1.4 'Lucida Grande', 'Lucida Sans Unicode', 'DejaVu Sans', 'Bitstream Vera Sans', 'Helvetica', 'Arial', sans-serif;
   margin: 0;
   padding: 0;
 }
+ 
+
 /* -- Links ----------------------------------------------------------------- */
-a {
-  color: #356de4;
-  text-decoration: none;
+h1 a {
+  &::after {
+    display: none;
+  }
 }
+
 .hidden {
   display: none;
 }
-a:hover {
-  text-decoration: underline;
-}
+
 /* "Jump to Table of Contents" link is shown to assistive tools, but hidden from
    sight until it's focused. */
 .jump {
@@ -50,9 +89,6 @@ a:hover {
   left: 40%;
 }
 /* -- Paragraphs ------------------------------------------------------------ */
-p {
-  margin: 1.3em 0;
-}
 dd p,
 td p {
   margin-bottom: 0;
@@ -61,61 +97,21 @@ dd p:first-child,
 td p:first-child {
   margin-top: 0;
 }
-/* -- Headings -------------------------------------------------------------- */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: #111111 !important;
-  /*was #f80*/
 
-  font-weight: 100;
-  line-height: 1.1;
-  margin: 1.1em 0 0.5em;
-}
-h1 {
-  font-size: 184.6%;
-  margin: 0;
-}
-h2 {
-  font-size: 153.846%;
-  margin: 0 !important;
-  padding: 1.5em 0 .5em 0;
-  border-bottom: 1px solid #c3c3c3 !important;
-}
-h3 {
-  font-size: 138.462%;
-  padding: 1.5em 0 .5em 0;
-}
-h4 {
-  border-bottom: 1px solid #DBDFEA;
-  color: #E48A2B;
-  font-size: 115.385%;
-  font-weight: normal;
-  padding: 1em 0 0 0;
-}
-h5,
-h6 {
-  font-size: 107.692%;
-}
+
 /* -- Code and examples ----------------------------------------------------- */
 code,
 kbd,
 pre,
-samp {
-  font-family: Menlo, Monaco, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace;
-  font-size: 92.308%;
-  line-height: 1.35;
+samp,
+A.crosslink {
+  font-family: $fontFamily-monospace;
+  font-size: $fontSize-smallest;
+  line-height: $gridUnit-default;
 }
 p code,
 p kbd,
-p samp {
-  background: #FCFBFA;
-  border: 1px solid #EFEEED;
-  padding: 0 3px;
-}
+p samp {}
 a code,
 a kbd,
 a samp,
@@ -142,25 +138,27 @@ pre.cmd {
   *overflow-x: scroll;
   padding: 1em;
 }
-pre.code {
-  background: #f3f3f3;
-  border: 1px solid #c3c3c3;
-  border-left-width: 5px;
-  line-height: 150%;
-}
+
 pre.terminal,
-pre.cmd {
-  background: #F0EFFC;
-  border: 1px solid #D0CBFB;
-  border-left: 5px solid #D0CBFB;
+pre.cmd,
+pre.code {
+  background: $color_gray-darkest;
+  border-left: $gridUnit-smallest solid $color_gray-dark;
+  margin: $gridUnit-large 0;
 }
-/* Don't reduce the font size of <code>/<kbd>/<samp> elements inside <pre>
-   blocks. */
-pre code,
-pre kbd,
-pre samp {
-  font-size: 100%;
+
+.description,
+.box.intro,
+.param-description,
+.returns-description {
+  code {
+    background-color: $color-gray-lighter;
+  }
 }
+pre code { background-color: transparent !important; }
+
+
+
 /* Used to denote text that shouldn't be selectable, such as line numbers or
    shell prompts. Guess which browser this doesn't work in. */
 .noselect {
@@ -191,12 +189,12 @@ table {
 }
 td,
 th {
-  border: 1px solid #fff;
+  border: 1px solid $color_gray-lightest;
   padding: 5px 12px;
   vertical-align: top;
 }
 td {
-  background: #E6E9F5;
+  background: $color_gray-lighter;
 }
 td dl {
   margin: 0;
@@ -208,13 +206,12 @@ td pre:first-child {
   margin-top: 0;
 }
 th {
-  background: #D2D7E6;
-  /*#97A0BF*/
+  background: $color_gray-light;
 
   border-bottom: none;
   border-top: none;
-  color: #000;
-  /*#FFF1D5*/
+  color: $color_gray-darker;
+  /*$color_gray-lightest1D5*/
 
   font-family: 'Trebuchet MS', sans-serif;
   font-weight: bold;
@@ -228,12 +225,13 @@ th {
 }
 .content {
   padding: 0 20px 0 25px;
+  max-width: 104rem;
 }
 .sidebar {
   padding: 0 2em;
 }
 #bd {
-  padding: 7px 0 130px;
+  padding: $gridUnit-large 0 $gridUnit-larger;
   position: relative;
   width: 99%;
 }
@@ -271,27 +269,27 @@ th {
 /* These are probably YUI-specific, and should be moved out of Selleck's default
    theme. */
 .button {
-  border: 1px solid #dadada;
+  border: 1px solid $color_gray-lighter;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
-  color: #444;
+  color: $color_gray-darker;
   display: inline-block;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 92.308%;
   font-weight: bold;
   padding: 4px 13px 3px;
-  -moz-text-shadow: 1px 1px 0 #fff;
-  -webkit-text-shadow: 1px 1px 0 #fff;
-  text-shadow: 1px 1px 0 #fff;
+  -moz-text-shadow: 1px 1px 0 $color_gray-lightest;
+  -webkit-text-shadow: 1px 1px 0 $color_gray-lightest;
+  text-shadow: 1px 1px 0 $color_gray-lightest;
   white-space: nowrap;
-  background: #EFEFEF;
+  background: $color_gray-lighter;
   /* old browsers */
 
-  background: -moz-linear-gradient(top, #f5f5f5 0%, #efefef 50%, #e5e5e5 51%, #dfdfdf 100%);
+  background: -moz-linear-gradient(top, #f5f5f5 0%, $color_gray-lighter 50%, #e5e5e5 51%, #dfdfdf 100%);
   /* firefox */
 
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(50%, #efefef), color-stop(51%, #e5e5e5), color-stop(100%, #dfdfdf));
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(50%, $color_gray-lighter), color-stop(51%, #e5e5e5), color-stop(100%, #dfdfdf));
   /* webkit */
 
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#dfdfdf', GradientType=0);
@@ -300,7 +298,7 @@ th {
 }
 .button:hover {
   border-color: #466899;
-  color: #fff;
+  color: $color_gray-lightest;
   text-decoration: none;
   -moz-text-shadow: 1px 1px 0 #222;
   -webkit-text-shadow: 1px 1px 0 #222;
@@ -321,26 +319,34 @@ th {
 .newwindow {
   text-align: center;
 }
-#hd h1 {
-  font-size: 250%;
-  text-transform: uppercase;
-}
 .header {
-  padding: 2em !important;
+  padding: 1em 0 0 0 !important;
+  background-color: $color_gray-dark;
+  a:hover {
+    background: transparent;
+  }
+  .yui3-u-3-4 {
+    width: 100%;
+  }
+}
+.header .version {
+  display: block;
+  background: $color_gray-dark;
+  padding: 0 $gridUnit-smaller;
+  width: 100%;
+  text-align: right;
 }
 .header .version em {
   display: block;
   text-align: right;
-  line-height: 60px;
-  color: #444444;
+  line-height: 32px;
+  color: $color_gray-default;
+  margin-bottom: 0;
 }
 #classdocs .item {
-  border-bottom: 1px solid #c3c3c3;
+  border-bottom: 1px solid $color_gray-light;
   margin: 0 !important;
   padding: 2em;
-}
-#classdocs h2 {
-  padding-top: 0 !important;
 }
 #classdocs .item .params p,
 #classdocs .item .returns p {
@@ -389,20 +395,38 @@ ul li p {
 .apidocs .attrs .extends .attr,
 .apidocs .events .extends .event {
   font-weight: bold;
+  a {
+    font-weight: bold;
+  }
 }
 .apidocs .methods .extends .inherited,
 .apidocs .properties .extends .inherited,
 .apidocs .attrs .extends .inherited,
 .apidocs .events .extends .inherited {
   font-weight: normal;
+  a {
+    font-weight: normal;
+  }
 }
+
 #hd {
   padding: 0 15px 1px 20px;
 }
-#hd img {
-  margin-right: 10px;
+#hd a {
+  display: block;
+  margin: 0 auto;
   vertical-align: middle;
+  text-align: center;
+  img {
+    display: inline-block;
+    height: 60px;
+    margin-top: $gridUnit-small;
+  }
 }
+#hd a:hover {
+  background: transparent;
+}
+
 /* -- API Docs CSS ---------------------------------------------------------- */
 /*
 This file is organized so that more generic styles are nearer the top, and more
@@ -425,36 +449,19 @@ specific tabview, see the other sections below.
   visibility: visible;
 }
 .apidocs .tabview .yui3-tabview-panel {
-  background: #f3f3f3;
-  padding: 1em;
-  border-radius: 0 0 1em 1em !important;
-  border: 1px solid #c3c3c3 !important;
+  padding: 0;
 }
 /* -- Generic Content Styles ------------------------------------------------ */
-/* Headings */
-h2,
-h3,
-h4,
-h5,
-h6 {
-  border: none;
-  color: #30418C;
-  font-weight: bold;
-  text-decoration: none;
-}
+
 .link-docs {
   float: right;
   font-size: 15px;
   margin: 4px 4px 6px;
   padding: 6px 30px 5px;
 }
-.apidocs {
-  zoom: 1;
-}
+
 /* Generic box styles. */
 .apidocs .box {
-  border: 1px solid;
-  border-radius: 3px;
   margin: 1em 0;
   padding: 0 1em;
 }
@@ -462,9 +469,8 @@ h6 {
    indicate private and protected items, item return types, etc. in an
    attractive and unobtrusive way. */
 .apidocs .flag {
-  background: #444444;
-  border-radius: 3px;
-  color: #fff;
+  background: $color_gray-darker;
+  color: $color_gray-lightest;
   font-size: 11px;
   margin: 0 0.5em;
   padding: 4px;
@@ -473,37 +479,44 @@ h6 {
 }
 /* Class/module metadata such as "Uses", "Extends", "Defined in", etc. */
 .apidocs .meta {
-  border: none;
-  border-top: 1px solid #c3c3c3;
-  color: #555;
-  font-size: 11px;
+  color: $color_gray-default;
+  font-size: $fontSize-smallest;
   padding: 1em 0;
 }
 .apidocs .meta p {
   margin: 0;
 }
+.module-class {
+  font-size: $fontSize-smaller;
+}
 /* Deprecation warning. */
 .apidocs .box.deprecated,
 .apidocs .flag.deprecated {
-  background: #fdac9f;
+  background: $color_tweenjs-default-transparent;
   border: 1px solid #fd7775;
+  p {
+    color: $color_gray-darkest;
+  }
 }
 .apidocs .box.deprecated p {
   margin: 0.5em 0;
 }
 .apidocs .flag.deprecated {
-  color: #444444;
+  color: $color_gray-darker;
 }
 /* Module/Class intro description. */
 .apidocs .intro {
-  background: none;
-  border: none;
-  padding: 0 !important;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    font-family: $fontFamily-secondary;
+    font-size: $fontSize-smaller;
+    line-height: $gridUnit-small;
+    padding: 0 !important;
 }
 /* Loading spinners. */
 #bd.loading .apidocs,
 #api-list.loading .yui3-tabview-panel {
-  background: #ffffff url(../img/spinner.gif) no-repeat center 70px;
+  background: $color_gray-lightest url(../img/spinner.gif) no-repeat center 70px;
   min-height: 150px;
 }
 #bd.loading .apidocs .content,
@@ -511,7 +524,7 @@ h6 {
   display: none;
 }
 .apidocs .no-visible-items {
-  color: #666;
+  color: $color_gray-default;
 }
 /* Generic inline list. */
 .apidocs ul.inline {
@@ -526,13 +539,14 @@ h6 {
 /* Comma-separated list. */
 .apidocs ul.commas li:after {
   content: ',';
+  font-size: $fontSize-smaller;
 }
 .apidocs ul.commas li:last-child:after {
   content: '';
 }
 /* Keyboard shortcuts. */
 kbd .cmd {
-  font-family: Monaco, Helvetica;
+  font-family: $fontFamily-monospace;
 }
 /* -- Generic Access Level styles ------------------------------------------- */
 .apidocs .item.protected,
@@ -556,17 +570,17 @@ kbd .cmd {
 }
 /* -- Generic Item Index styles --------------------------------------------- */
 .apidocs .index h3 {
-  border-bottom: 1px solid #efefef;
-  color: #444444;
+  border-bottom: 1px solid $color_gray-light;
+  color: $color_gray-darker;
   font-size: 13px;
-  margin: 2em 0 0.6em;
+  margin: 1em 0 0.6em;
   padding-bottom: 2px;
 }
 .apidocs .index .no-visible-items {
   margin-top: 2em;
 }
 .apidocs .index-list {
-  border-color: #efefef;
+  border-color: $color_gray-lighter;
   font-size: 12px;
   list-style: none;
   margin: 0;
@@ -620,26 +634,22 @@ kbd .cmd {
   background: #fd6b1b;
 }
 .apidocs .flag.async {
-  background: #356de4;
+  background: $color_gray-darker;
 }
 .apidocs .flag.required {
   background: #e60923;
 }
 .apidocs .item {
-  border-bottom: 1px solid #efefef;
+  border-bottom: 1px solid $color_gray-lighter;
   margin: 1.5em 0 2em;
   padding-bottom: 2em;
-}
-.apidocs .item h4,
-.apidocs .item h5,
-.apidocs .item h6 {
-  color: #444444;
-  font-family: inherit;
-  font-size: 100%;
 }
 .apidocs .item .description p,
 .apidocs .item pre.code {
   margin: 1em 0 0;
+}
+.apidocs .item .description {
+  font-size: $fontSize-smaller;
 }
 .apidocs .item .meta {
   background: none;
@@ -653,11 +663,13 @@ kbd .cmd {
 .apidocs .item .type,
 .apidocs .item .type a,
 .apidocs .returns-inline {
-  color: #555;
+  //color: $color_gray-default;
+  text-decoration: none;
+  font-size: 12px;
 }
 .apidocs .item .type,
 .apidocs .returns-inline {
-  font-size: 11px;
+  font-size: 12px;
   margin: 0 0 0 0;
 }
 .apidocs .item .type a {
@@ -675,16 +687,22 @@ kbd .cmd {
 .apidocs .param {
   margin-bottom: 1em;
 }
+.apidocs .param-description {
+  font-size: $fontSize-smaller;
+  code {
+    font-size: $fontSize-smallest
+  }
+}
 .apidocs .param .type,
 .apidocs .param .type a {
-  color: #666;
+  //color: $color_gray-default;
 }
 .apidocs .param .type {
   margin: 0 0 0 0.5em;
   *margin-left: 0.5em;
 }
 .apidocs .param-name {
-  font-weight: bold;
+  // font-weight: bold;
 }
 /* -- Item "Emits" block ---------------------------------------------------- */
 .apidocs .item .emits {
@@ -694,7 +712,7 @@ kbd .cmd {
 /* -- Item "Returns" block -------------------------------------------------- */
 .apidocs .item .returns .type,
 .apidocs .item .returns .type a {
-  font-size: 100%;
+  font-size: 12px;
   margin: 0;
 }
 /* -- Class Constructor block ----------------------------------------------- */
@@ -709,6 +727,11 @@ kbd .cmd {
   border: none;
   overflow: visible;
   padding: 0;
+}
+pre.prettyprint {
+  border-top: inherit;
+  border-right: inherit;
+  border-bottom: inherit;
 }
 .apidocs .L0,
 .apidocs .L1,
@@ -736,7 +759,7 @@ kbd .cmd {
 }
 #api-tabview-filter,
 #api-tabview-panel {
-  background: #f3f3f3;
+  background: $color_gray-lighter;
   border: none !important;
 }
 #api-tabview-filter {
@@ -775,44 +798,39 @@ kbd .cmd {
 /*#api-options label { margin-right: 0.6em; }*/
 /* -- API list -------------------------------------------------------------- */
 #api-list {
-  margin-top: -2em;
-  *zoom: 1;
+  margin-top: 0em;
 }
 #api-modules {
-  border-bottom: 1px solid #c3c3c3;
+  background-color: $color_gray-light
 }
 .apis {
   font-size: 12px;
   line-height: 1.4;
   list-style: none;
   margin: 0;
-  padding: 0.5em 0 0.5em 0.4em;
+  padding: 0 0 0 0.4em;
 }
 .apis a {
-  border: 1px solid transparent;
-  display: block;
-  margin: 0 0 0 -4px;
-  padding: 0.4em;
-  text-decoration: none;
-  _border: none;
-  _display: inline;
-  color: #444444 !important;
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 0 -4px;
+    padding: 0.1rem 1.4em;
+    text-decoration: none;
 }
-.apis a:hover,
-.apis a:focus {
-  background: #444444;
-  color: white !important;
-  border-radius: 3px;
-  color: #444444;
-  outline: none;
+#api-modules.apis a {
+  font-size: $fontSize-smaller;
+}
+.apis li {
+  margin: 0;
 }
 .api-list-item a:hover,
 .api-list-item a:focus {
   font-weight: bold;
-  text-shadow: 1px 1px 1px #fff;
+  text-shadow: 1px 1px 1px $color_gray-lightest;
 }
 .apis .message {
-  color: #888;
+  color: $color_gray-light;
 }
 .apis .result a {
   padding: 3px 5px 2px;
@@ -825,34 +843,94 @@ kbd .cmd {
   font-weight: bold;
 }
 /* -- YUI Overrides -------------------------------------------------------------- */
-.yui3-skin-sam .yui3-tab-selected .yui3-tab-label {
+.yui3-skin-sam .yui3-tab-selected a.yui3-tab-label {
   border: none !important;
+  &::after {
+    display: none !important;
+  }
 }
 .yui3-skin-sam .yui3-tab-label {
   padding: 1em !important;
   border: none !important;
   background: none !important;
-  background-color: #c3c3c3 !important;
+  background-color: $color_gray-light !important;
 }
 .yui3-skin-sam .yui3-tab-label:hover {
-  background-color: #444444 !important;
-  color: white !important;
+  background-color: $color_gray-darker !important;
+  color: $color_gray-lightest !important;
 }
-/*  Important Library Specifics, find and replace
-	@color-CreateJS:    #e7841d;
-    @color-EaselJS:     #3399ff;
-    @color-TweenJS:     #f12528;
-    @color-SoundJS:     #8765d6;
-    @color-PreloadJS:   #bb2ee5;
-    @color-Zoe:         #00b224;
-	*/
-.yui3-skin-sam .yui3-tab-selected .yui3-tab-label,
-.yui3-skin-sam .yui3-tab-selected .yui3-tab-label:focus,
-.yui3-skin-sam .yui3-tab-selected .yui3-tab-label:hover {
-  background: none !important;
-  border: none !important;
-  background-color: #3399ff !important;
+
+.yui3-tab-panel-selected {
+  padding: $gridUnit-smaller;
 }
-.yui3-skin-sam .yui3-tabview-list {
-  border-bottom: 5px solid #3399ff !important;
+div#hd.yui3-g.header {
+  word-spacing: normal;
+  letter-spacing: normal;
+}
+
+// Syntax Highlighting
+.pln {
+  color: $color_gray-lighter;
+}
+.com {
+  color: lighten($color_gray-dark, 10%);
+}
+.kwd {
+  color: $color_easeljs-default;
+}
+.str {
+  color: $color_createjs-default;
+}
+.typ {
+  color: $color_tweenjs-default;
+}
+.lit {
+  color: $color_preloadjs-default;
+}
+.pun,
+.opn,
+.clo {
+  color: $color_soundjs-default;
+}
+
+ol.linenums {
+  position: relative;
+  padding-left: 60px;
+  &::before {
+    content: '';
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    width: 5.5rem;
+    background-color: $color_gray-dark;;
+  }
+  .file-line {
+    position: relative;
+    z-index: 2;
+    color:$color_gray-darkest;
+  }
+}
+
+.yui3-skin-sam .yui3-tab-label,
+.yui3-skin-sam .yui3-tab-selected a.yui3-tab-label {
+  font-size: $fontSize-smallest;
+  &::after {
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+  }
+}
+
+ol.linenums .file-line {
+  color: $color_gray-light;
+}
+
+.apidocs .file pre.code, #doc .apidocs .file pre.prettyprint {
+  overflow-x: auto;
+  background-color: $color_gray-darkest;
+}
+#doc {
+  overflow-x: hidden;
 }
