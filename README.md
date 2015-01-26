@@ -65,3 +65,10 @@ The Ease class provides a collection of easing functions for use with TweenJS. I
 
 ## Thanks
 Special thanks to [Robert Penner](http://flashblog.robertpenner.com/) for his easing equations, which form the basis for the Ease class.
+
+## SpringRoll changes
+* Tween.set() uses this._appendQueueProps(props); so that changes are reflected in subsequent to() calls, to make it the same as to() with a duration of 0.
+* Added Tween.reset() to reset a Tween to the initial state. This really only saves a Tween.get() call, and won't particularly help garbage collection, but there it is.
+* Moved when finished tweens are paused in setPosition() so that in a callback they can be added to and unpaused.
+* While a bug is fixed, added a check to avoid an [error](http://github.com/CreateJS/TweenJS/issues/56)
+* Removed version number from built files, versioning is handled by the Git tags & Bower. 

@@ -193,7 +193,7 @@ this.createjs = this.createjs||{};
 		 **/
 		this.passive = false;
 	
-	// private properties:	
+	// private properties:
 		/**
 		 * @property _paused
 		 * @type {Boolean}
@@ -353,7 +353,7 @@ this.createjs = this.createjs||{};
 	Tween._plugins = {};
 
 
-// static methods	
+// static methods
 	/**
 	 * Returns a new tween instance. This is functionally identical to using "new Tween(...)", but looks cleaner
 	 * with the chained syntax of TweenJS.
@@ -450,7 +450,8 @@ this.createjs = this.createjs||{};
 		for (var i= 0, l=tweens.length; i<l; i++) {
 			var tween = tweens[i];
 			tween._paused = true;
-			tween.target.tweenjs_count = 0;
+			if(tween.target)
+				tween.target.tweenjs_count = 0;
 		}
 		tweens.length = 0;
 	};
@@ -545,18 +546,19 @@ this.createjs = this.createjs||{};
 		this._prevPos = -1;
 		this.duration = 0;
 		this.position = null;
+		var key;
 		if(this._curQueueProps)
 		{
-			for(var key in this._curQueueProps)
+			for(key in this._curQueueProps)
 				delete this._curQueueProps[key];
 		}
 		if(this._initQueueProps)
 		{
-			for(var key in this._initQueueProps)
+			for(key in this._initQueueProps)
 				delete this._initQueueProps[key];
 		}
 		return this;
-	}
+	};
 	
 	/**
 	 * Queues a wait (essentially an empty tween).
