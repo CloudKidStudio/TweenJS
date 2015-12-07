@@ -1,8 +1,5 @@
 /*
-* extend
-* Visit http://createjs.com/ for documentation, updates and examples.
-*
-* Copyright (c) 2010 gskinner.com, inc.
+* Copyright (c) 2014 gskinner.com, inc.
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -26,39 +23,33 @@
 * OTHER DEALINGS IN THE SOFTWARE.
 */
 
-/**
- * @module CreateJS
- */
+module.exports = function (grunt) {
+	var os = require('os');
 
-// namespace:
-this.createjs = this.createjs||{};
+	grunt.registerMultiTask('listips', 'Prints a list of active ips.', function() {
+		var opts = this.options({"port": 80});
 
-/**
- * @class Utility Methods
- */
+		var port = opts.port;
+		var label = opts.label?'('+opts.label+') ':'';
 
-/**
- * Sets up the prototype chain and constructor property for a new class.
- *
- * This should be called right after creating the class constructor.
- *
- * 	function MySubClass() {}
- * 	createjs.extend(MySubClass, MySuperClass);
- * 	MySubClass.prototype.doSomething = function() { }
- *
- * 	var foo = new MySubClass();
- * 	console.log(foo instanceof MySuperClass); // true
- * 	console.log(foo.prototype.constructor === MySubClass); // true
- *
- * @method extend
- * @param {Function} subclass The subclass.
- * @param {Function} superclass The superclass to extend.
- * @return {Function} Returns the subclass's new prototype.
- */
-createjs.extend = function(subclass, superclass) {
-	"use strict";
+		if (port == 80) {
+			port = '';
+		} else {
+			port = ':'+port;
+		}
 
-	function o() { this.constructor = subclass; }
-	o.prototype = superclass.prototype;
-	return (subclass.prototype = new o());
-};
+		var interfaces = os.networkInterfaces();
+		var addresses = [];
+		for (var n in interfaces) {
+			for (var n2 in interfaces[n]) {
+				var address = interfaces[n][n2];
+				if (address.family == 'IPv4' && !address.internal) {
+					addresses.push('http://'+address.address+port);
+				}
+			}
+		}
+
+		addresses.push('http://localhost'+port);
+		grunt.log.subhead('\n'+label+'Listening on:\n\t', addresses.join('\n\t '));
+	});
+}

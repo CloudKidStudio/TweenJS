@@ -1,8 +1,5 @@
 /*
-* extend
-* Visit http://createjs.com/ for documentation, updates and examples.
-*
-* Copyright (c) 2010 gskinner.com, inc.
+* Copyright (c) 2014 gskinner.com, inc.
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -26,39 +23,52 @@
 * OTHER DEALINGS IN THE SOFTWARE.
 */
 
-/**
- * @module CreateJS
- */
+module.exports = function (grunt) {
+	var net = require('net');
+	var _callback;
+	var _ports;
+	var _opts;
+	var _done;
 
-// namespace:
-this.createjs = this.createjs||{};
+	grunt.registerMultiTask('findopenport', 'Prints a list of active ips.', function() {
+		_opts = this.options();
 
-/**
- * @class Utility Methods
- */
+		_done = this.async();
+		_ports = _opts['ports'] || [80, 8888, 9000, 9999, 9001];
+		checkNext();
+	});
 
-/**
- * Sets up the prototype chain and constructor property for a new class.
- *
- * This should be called right after creating the class constructor.
- *
- * 	function MySubClass() {}
- * 	createjs.extend(MySubClass, MySuperClass);
- * 	MySubClass.prototype.doSomething = function() { }
- *
- * 	var foo = new MySubClass();
- * 	console.log(foo instanceof MySuperClass); // true
- * 	console.log(foo.prototype.constructor === MySubClass); // true
- *
- * @method extend
- * @param {Function} subclass The subclass.
- * @param {Function} superclass The superclass to extend.
- * @return {Function} Returns the subclass's new prototype.
- */
-createjs.extend = function(subclass, superclass) {
-	"use strict";
+	function checkNext() {
+		if (!_ports.length) {
+			grunt.option(_portName, -1);
+			_done();
+			return;
+		}
 
-	function o() { this.constructor = subclass; }
-	o.prototype = superclass.prototype;
-	return (subclass.prototype = new o());
+		check(_ports.shift(), function(success, port) {
+			if (!success) {
+				checkNext();
+			} else {
+				//grunt.option(_portName, port);
+				var configNames = Array.isArray(_opts.configName)?_opts.configName:[_opts.configName];
+
+				configNames.forEach(function(item) {
+					grunt.config.set(item, port);
+				});
+				_done();
+			}
+		});
+	}
+
+	function check(port, callback) {
+		var server = net.createServer();
+		server.on('error', function(e) {
+			callback(false, port);
+		});
+
+		server.listen(port, function() {
+			callback(true, port);
+			server.close();
+		});
+	}
 };

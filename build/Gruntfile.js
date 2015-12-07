@@ -24,6 +24,9 @@ module.exports = function (grunt) {
 								"DEBUG": false
 							}
 						},
+						mangle: {
+							except: getExclusions()
+						}
 					},
 					build: {
 						files: {
@@ -214,6 +217,17 @@ module.exports = function (grunt) {
 		return clean;
 	}
 
+	function getExclusions() {
+		var list = getConfigValue("source");
+		var files = [];
+		for (var i= 0, l=list.length; i<l; i++) {
+			var name = path.basename(list[i], '.js');
+			var letter = name.substr(0,1); // Check for Uppercase (Class), since methods are fine.
+			if (letter.toUpperCase() == letter) { files.push(name); }
+		}
+		return files;
+	}
+
 	function getBuildArgs() {
 		var banner = grunt.file.read("BANNER");
 		grunt.config("concat.options.banner", banner);
@@ -284,6 +298,9 @@ module.exports = function (grunt) {
 	grunt.registerTask('nextlib', [
 		"updateversion", "combine", "uglify", "clearversion", "copy:src"
 	]);
+
+	/** Aliased task for WebStorm quick-run */
+	grunt.registerTask('_next_tween', ["next"]);
 
 	/**
 	 * Task for exporting a release build (version based on package.json)

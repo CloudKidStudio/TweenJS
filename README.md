@@ -7,7 +7,9 @@ tweening of both numeric object properties & CSS style properties.
 ## Example
 The API is simple but very powerful, making it easy to create complex tweens by chaining commands.
 
-    var tween = createjs.Tween.get(myTarget).to({x:300},400).set({label:"hello!"}).wait(500).to({alpha:0,visible:false},1000).call(onComplete);
+```javascript
+var tween = createjs.Tween.get(myTarget).to({x:300},400).set({label:"hello!"}).wait(500).to({alpha:0,visible:false},1000).call(onComplete);
+```
 
 The example above will create a new tween instance that:
 
@@ -30,7 +32,10 @@ and pause actions.
 This library is currently alpha. It has been tested (though not extensively), and is likely to change somewhat as it matures.
 
 Tweens support a number of configuration properties, which are specified as the second param when creating a new tween:
+
+```javascript
 createjs.Tween.get(target, {loop:true, useTicks:true, css:true, ignoreGlobalPause:true}).to(etc...);
+```
 
 All configuration properties default to false. The properties are:
 loop - indicates whether the tween should loop when it reaches the end
@@ -39,13 +44,17 @@ css - enables css mapping for some css properties
 ignoreGlobalPause - the tween will continue ticking even when Ticker is paused.
 
 When using Tween.get, you can also specify true as the third parameter to override any active tweens on the target.
-createjs.Tween.get(target,null,true); // this will remove any existing tweens on the target.
 
+```javascript
+createjs.Tween.get(target,null,true); // this will remove any existing tweens on the target.
+```
 
 ## Support and Resources
 * Find examples and more information at the [TweenJS web site](http://tweenjs.com/)
 * Read the [documentation](http://createjs.com/Docs/TweenJS/)
-* You can also ask questions and interact with other users at our [Community](http://community.createjs.com) site.
+* Discuss, share projects, and interact with other users on [reddit](http://www.reddit.com/r/createjs/).
+* Ask technical questions on [Stack Overflow](http://stackoverflow.com/questions/tagged/tweenjs).
+* File verified bugs or formal feature requests using Issues on [GitHub](https://github.com/createjs/TweenJS/issues).
 * Have a look at the included [examples](https://github.com/CreateJS/TweenJS/tree/master/examples) and [API documentation](http://createjs.com/Docs/TweenJS/) for more in-depth information.
 
 It was built by [gskinner.com](http://www.gskinner.com), and is released for free under the MIT license, which means you can use it for almost any purpose (including commercial projects). We appreciate credit where possible, but it is not a requirement.
@@ -70,5 +79,4 @@ Special thanks to [Robert Penner](http://flashblog.robertpenner.com/) for his ea
 * Tween.set() uses this._appendQueueProps(props); so that changes are reflected in subsequent to() calls, to make it the same as to() with a duration of 0.
 * Added Tween.reset() to reset a Tween to the initial state. This really only saves a Tween.get() call, and won't particularly help garbage collection, but there it is.
 * Moved when finished tweens are paused in setPosition() so that in a callback they can be added to and unpaused.
-* While a bug is fixed, added a check to avoid an [error](http://github.com/CreateJS/TweenJS/issues/56)
-* Removed version number from built files, versioning is handled by the Git tags & Bower. 
+* Removed version number from built files, versioning is handled by the Git tags & Bower.
